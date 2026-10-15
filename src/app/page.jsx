@@ -210,7 +210,7 @@ export default function Home() {
             I&apos;m open to opportunities, collaborations, and interesting software projects.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-            <a hhref="mailto:duanemahinay@gmail.com" 
+            <a href="mailto:duanemahinay@gmail.com" 
                 className="bg-foreground text-background px-8 py-4 rounded-full font-medium hover:scale-105 transition-transform flex items-center gap-2"
                   >   
                  <   Mail size={18} /> Get in touch
