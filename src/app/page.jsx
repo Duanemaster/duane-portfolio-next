@@ -35,7 +35,7 @@ export default function Home() {
             </h1>
 
             <p className="text-lg md:text-xl text-secondary mb-12 max-w-2xl leading-relaxed font-light">
-              I am Duane Benedict Mahinay, a graduate student from STI Global City turning complex ideas into functional applications—from embedded AI models to full-stack enterprise workflows.
+              I am Duane Benedict Mahinay, an engineering graduate from STI Global City. I take complex ideas and quietly forge them into working software—from embedded AI to full-stack enterprise workflows.
             </p>
 
             <div className="flex flex-wrap gap-6 items-center">
@@ -105,10 +105,11 @@ export default function Home() {
                     <img 
                       src={project.image} 
                       alt={project.title} 
-                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 md:group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                      onClick={() => setFullscreenImage(project.image)}
+                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 md:group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out cursor-pointer md:cursor-default"
                     />
                  
-                  <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                  <div className="absolute top-4 left-4 flex flex-col gap-2 z-10 pointer-events-none">
                     {project.inDevelopment && (
                       <span className="bg-background/90 text-foreground text-xs font-medium px-3 py-1 rounded-full backdrop-blur-md border border-border">
                         In Development
@@ -121,10 +122,10 @@ export default function Home() {
                     )}
                   </div>
 
-                  {/* Expand Image Button */}
+                  {/* Expand Image Button (Visible always on mobile, hover on desktop) */}
                   <button
                     onClick={() => setFullscreenImage(project.image)}
-                    className="absolute top-4 right-4 z-10 p-2 bg-background/90 text-foreground backdrop-blur-md border border-border rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
+                    className="absolute top-4 right-4 z-10 p-2 bg-background/90 text-foreground backdrop-blur-md border border-border rounded-full opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
                     aria-label="View Full Image"
                   >
                     <Maximize size={16} />
@@ -186,7 +187,7 @@ export default function Home() {
           <div className="mb-12">
             <h3 className="text-xl font-serif text-foreground mb-2">BS Computer Engineering</h3>
             <p className="text-secondary mb-1">STI Global City</p>
-            <p className="text-sm font-mono text-secondary mb-6">Expected July 2026</p>
+            <p className="text-sm font-mono text-secondary mb-6">Graduated July 2026</p>
           </div>
           
           <div className="grid grid-cols-2 gap-x-4 gap-y-10">
@@ -213,7 +214,7 @@ export default function Home() {
             <a href="mailto:duanemahinay@gmail.com" 
                 className="bg-foreground text-background px-8 py-4 rounded-full font-medium hover:scale-105 transition-transform flex items-center gap-2"
                   >   
-                 <   Mail size={18} /> Get in touch
+                 <Mail size={18} /> Get in touch
             </a>
             <a href="https://github.com/Duanemaster" target="_blank" rel="noopener noreferrer" className="p-4 rounded-full border border-border text-foreground hover:bg-surface transition-colors">
               <Code size={20} />
