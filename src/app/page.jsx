@@ -53,7 +53,7 @@ export default function Home() {
               <img
                 src="/Duane Benedict Mahinay.png"
                 alt="Duane Benedict Mahinay"
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                className="w-full h-full object-cover grayscale-0 md:grayscale md:hover:grayscale-0 transition-all duration-700"
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function Home() {
                     <img 
                       src={project.image} 
                       alt={project.title} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                      className="w-full h-full object-cover grayscale-0 md:grayscale group-hover:grayscale-0 md:group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out"
                     />
                  
                   <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
@@ -209,14 +209,14 @@ export default function Home() {
           <p className="text-xl text-secondary mb-12 font-light">
             I&apos;m open to opportunities, collaborations, and interesting software projects.
           </p>
-          <div className="flex justify-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
             <a href="mailto:duanemahinay@gmail.com" className="bg-foreground text-background px-8 py-4 rounded-full font-medium hover:scale-105 transition-transform flex items-center gap-2">
               <Mail size={18} /> Get in touch
             </a>
-            <a href="#" className="p-4 rounded-full border border-border text-foreground hover:bg-surface transition-colors">
+            <a href="https://github.com/Duanemaster" target="_blank" rel="noopener noreferrer" className="p-4 rounded-full border border-border text-foreground hover:bg-surface transition-colors">
               <Code size={20} />
             </a>
-            <a href="#" className="p-4 rounded-full border border-border text-foreground hover:bg-surface transition-colors">
+            <a href="#about" className="p-4 rounded-full border border-border text-foreground hover:bg-surface transition-colors">
               <User size={20} />
             </a>
           </div>
