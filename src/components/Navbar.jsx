@@ -1,96 +1,87 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Shield, Cpu, Binary } from 'lucide-react';
+import { useFaction, FACTION_INFO } from './ThemeProvider';
+
+const ICONS = { terran: Shield, protoss: Cpu, zerg: Binary };
+const LINKS = [
+  { id: 'work', label: 'Work' },
+  { id: 'about', label: 'About' },
+  { id: 'contact', label: 'Contact' },
+];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { faction, setFaction } = useFaction();
+  const [active, setActive] = useState('');
 
-  // Para iwas error sa Next.js hydration
-  useEffect(() => setMounted(true), []);
-
-  const links = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Work', href: '#work' },
-    { name: 'Experience', href: '#experience' },
-  ];
+  useEffect(() => {
+    const els = LINKS.map((l) => document.getElementById(l.id)).filter(Boolean);
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <nav className="fixed w-full z-50 bg-background/80 backdrop-blur-md border-b border-border transition-colors duration-500">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-        <a href="#home" className="text-2xl font-serif font-bold tracking-tighter text-foreground">
-          DBM.
+    <header className="site-header sticky top-0 z-50">
+      <div className="shell flex h-14 items-center justify-between gap-4">
+        <a href="#top" className="font-mono text-sm font-medium text-ink">
+          DBM
+          <span className="ml-2 hidden text-dim sm:inline">/ {FACTION_INFO[faction].designation}</span>
         </a>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-secondary">
-          {links.map((link) => (
-            <a key={link.name} href={link.href} className="hover:text-foreground transition-colors">
-              {link.name}
+        <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
+          {LINKS.map((l) => (
+            <a
+              key={l.id}
+              href={`#${l.id}`}
+              className={`text-sm transition-colors duration-200 ${
+                active === l.id ? 'text-ink' : 'text-dim hover:text-ink'
+              }`}
+            >
+              {l.label}
             </a>
           ))}
-          <a href="/Duane_Benedict_Resume.pdf" target="_blank" rel="noreferrer" className="text-foreground hover:text-accent transition-colors flex items-center gap-1">
-            Resume
-          </a>
-          
-          {/* Theme Toggle Button */}
-          {mounted && (
-            <button 
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-full hover:bg-surface transition-colors text-foreground"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-          )}
-        </div>
+        </nav>
 
-        {/* Mobile Toggle */}
-        <div className="md:hidden flex items-center gap-4">
-          {mounted && (
-            <button 
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="text-foreground"
-            >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-          )}
-          <button className="text-foreground" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+        <div
+          role="radiogroup"
+          aria-label="Faction theme"
+          className="faction-switch flex items-center border border-line"
+        >
+          {Object.values(FACTION_INFO).map((f) => {
+            const Icon = ICONS[f.id];
+            const isActive = faction === f.id;
+            return (
+              <button
+                key={f.id}
+                role="radio"
+                aria-checked={isActive}
+                aria-label={f.name}
+                onClick={() => setFaction(f.id)}
+                className={`relative flex items-center gap-1.5 px-2.5 py-1.5 font-mono text-xs transition-colors duration-200 ${
+                  isActive ? 'text-accent' : 'text-dim hover:text-ink'
+                }`}
+              >
+                <Icon size={13} aria-hidden="true" />
+                <span className="hidden sm:inline">{f.name}</span>
+                {isActive && (
+                  <motion.span
+                    layoutId="faction-indicator"
+                    className="absolute inset-x-0 -bottom-px h-px bg-accent"
+                    transition={{ duration: 0.25, ease: [0.22, 0.61, 0.36, 1] }}
+                  />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-border py-6 px-6 flex flex-col gap-6 shadow-lg"
-          >
-            {links.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                onClick={() => setIsOpen(false)}
-                className="text-lg font-serif text-secondary hover:text-foreground transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-            <a href="/Duane_Benedict_Resume.pdf" target="_blank" rel="noreferrer" className="text-lg font-serif text-foreground">
-              Resume
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+    </header>
   );
 }

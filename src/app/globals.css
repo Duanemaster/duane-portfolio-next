@@ -1,42 +1,443 @@
 @import "tailwindcss";
 
+/* =========================================================
+   FACTION SKINS
+   Pareho ang layout at spacing. Frame, texture, buttons, at palette lang ang iba.
+   ========================================================= */
+:root,
+[data-faction='terran'] {
+  --canvas: 8 12 15;
+  --panel: 16 19 22;
+  --line: 72 80 88;
+  --ink: 222 228 232;
+  --dim: 132 144 154;
+  --accent: 226 156 58; /* amber */
+  --signal: 74 214 134; /* LED green */
+
+  --frame-a: #4c525a;
+  --frame-b: #1b1f23;
+  --frame-rivets:
+    radial-gradient(circle at 7px 7px, #a5aeb6 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at calc(100% - 7px) 7px, #a5aeb6 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at 7px calc(100% - 7px), #a5aeb6 0 1.4px, transparent 2.2px),
+    radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #a5aeb6 0 1.4px, transparent 2.2px);
+  --clip: polygon(0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px));
+  --clip-in: polygon(0 8px, 8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px));
+  --radius: 0;
+  --radius-in: 0;
+  --rtl: 0;
+  --rtr: 0;
+
+  --inner-bg: #101316;
+  --inner-tex: repeating-linear-gradient(128deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 6px);
+  --inner-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.7);
+
+  --btn-bg: #1f7a4b;
+  --btn-edge: #4fcf93;
+  --btn-ink: #eafff3;
+  --btn-radius: 2px;
+}
+
+[data-faction='protoss'] {
+  --canvas: 6 8 14;
+  --panel: 10 12 20;
+  --line: 120 108 74;
+  --ink: 232 232 240;
+  --dim: 146 150 176;
+  --accent: 236 200 112; /* gold */
+  --signal: 128 156 255; /* psionic blue */
+
+  --frame-a: #e9cf86;
+  --frame-b: #7d5f26;
+  --frame-rivets: none;
+  --clip: polygon(0 22px, 22px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 22px), calc(100% - 22px) 100%, 6px 100%, 0 calc(100% - 6px));
+  --clip-in: polygon(0 17px, 17px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 17px), calc(100% - 17px) 100%, 4px 100%, 0 calc(100% - 4px));
+  --radius: 0;
+  --radius-in: 0;
+  --rtl: 0;
+  --rtr: 0;
+
+  --inner-bg: #07080d;
+  --inner-tex: repeating-linear-gradient(45deg, rgba(120, 150, 255, 0.014) 0 1px, transparent 1px 4px);
+  --inner-shadow: inset 0 0 0 1px rgba(120, 150, 255, 0.4);
+
+  --btn-bg: #1d3299;
+  --btn-edge: #8aa0ff;
+  --btn-ink: #eef1ff;
+  --btn-radius: 3px;
+}
+
+[data-faction='zerg'] {
+  --canvas: 14 8 10;
+  --panel: 30 12 14;
+  --line: 120 84 66;
+  --ink: 236 226 222;
+  --dim: 164 138 130;
+  --accent: 214 92 78; /* blood red */
+  --signal: 176 108 220; /* purple */
+
+  --frame-a: #7e5844;
+  --frame-b: #36221a;
+  --frame-rivets:
+    radial-gradient(circle at 12px 12px, #8f4cb0 0 5px, transparent 6px),
+    radial-gradient(circle at calc(100% - 14px) calc(100% - 12px), #8f4cb0 0 4px, transparent 5px),
+    radial-gradient(circle at calc(100% - 10px) 10px, #5e3a2a 0 3px, transparent 4px);
+  --clip: none;
+  --clip-in: none;
+  --radius: 30px 8px 30px 8px;
+  --radius-in: 25px 4px 25px 4px;
+  --rtl: 25px;
+  --rtr: 4px;
+
+  --inner-bg: #34100f;
+  --inner-tex: repeating-radial-gradient(circle at 30% 40%, rgba(255, 120, 100, 0.014) 0 2px, transparent 2px 10px);
+  --inner-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.7);
+
+  --btn-bg: #7e2822;
+  --btn-edge: #d98a6a;
+  --btn-ink: #fff0ea;
+  --btn-radius: 14px 3px 14px 3px;
+}
+
+/* ---------- TAILWIND v4 THEME ---------- */
 @theme inline {
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-playfair);
+  --color-canvas: rgb(var(--canvas));
+  --color-panel: rgb(var(--panel));
+  --color-line: rgb(var(--line));
+  --color-ink: rgb(var(--ink));
+  --color-dim: rgb(var(--dim));
+  --color-accent: rgb(var(--accent));
+  --color-signal: rgb(var(--signal));
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-border: var(--border-color);
-  --color-secondary: var(--secondary);
-  --color-surface: var(--surface);
+  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-display: var(--font-chakra), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
-:root {
-  --background: #f5f2ea; /* cream */
-  --foreground: #1a1a1a;
-  --accent: #b8342c; /* editorial red/rust */
-  --border-color: #d9d4c7;
-  --secondary: #6b6558; /* muted body text */
-  --surface: #ece7db; /* card bg, slightly darker than bg */
-}
-
-.dark {
-  --background: #0d0d10; /* maangas midnight */
-  --foreground: #ededed;
-  --accent: #e0574d;
-  --border-color: #26262b;
-  --secondary: #9a9aa0;
-  --surface: #17171b;
+/* =========================================================
+   BASE (flat na background, walang gradient)
+   ========================================================= */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: rgb(var(--ink));
+  -webkit-font-smoothing: antialiased;
+  background-color: rgb(var(--canvas));
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
+::selection {
+  background: rgb(var(--accent) / 0.35);
+}
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.35);
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--line));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--accent));
+}
+
+.scroller {
+  overscroll-behavior: contain;
+}
+
+/* =========================================================
+   FRAME
+   Ang hugis (clip-path) ay nasa pseudo-element, hindi sa parent ng
+   scrolling content, kaya magaan ang scroll.
+   ========================================================= */
+.frame {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  padding: 5px;
+}
+@media (min-width: 1024px) {
+  .frame {
+    height: 100%;
+  }
+}
+.frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    var(--frame-rivets),
+    linear-gradient(150deg, var(--frame-a), var(--frame-b) 55%, var(--frame-a));
+  clip-path: var(--clip);
+  border-radius: var(--radius);
+}
+
+.frame-inner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.frame-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--inner-tex), var(--inner-bg);
+  clip-path: var(--clip-in);
+  border-radius: var(--radius-in);
+  box-shadow: var(--inner-shadow);
+}
+
+/* titlebar: pareho ang horizontal padding sa laman ng panel */
+.titlebar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1.25rem;
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgb(var(--line) / 0.6);
+  border-radius: var(--rtl) var(--rtr) 0 0;
+}
+@media (min-width: 768px) {
+  .titlebar {
+    padding-inline: 2rem;
+  }
+}
+[data-faction='protoss'] .titlebar {
+  color: rgb(var(--accent));
+  border-bottom-color: rgb(var(--accent) / 0.5);
+}
+
+.stage {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  gap: 0.75rem;
+  align-content: start;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (min-width: 1024px) {
+  .stage {
+    overflow: hidden;
+    align-content: stretch;
+    grid-template-rows: minmax(0, 1fr);
+  }
+}
+
+/* manipis na divider sa pagitan ng mga child */
+.rules {
+  border-block: 1px solid rgb(var(--line) / 0.5);
+}
+.rules > * + * {
+  border-top: 1px solid rgb(var(--line) / 0.5);
+}
+
+/* =========================================================
+   CONTROLS (flat, walang glow)
+   ========================================================= */
+.btn,
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: var(--btn-radius);
+  transition: filter 0.15s ease, transform 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.btn {
+  color: var(--btn-ink);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-edge);
+}
+.btn:hover,
+.tab:hover {
+  filter: brightness(1.12);
+}
+.btn:active,
+.tab:active {
+  transform: translateY(1px);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: rgb(var(--line));
+  color: rgb(var(--ink));
+}
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+}
+
+.tab {
+  color: rgb(var(--dim));
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgb(var(--line) / 0.7);
+  padding: 0.5rem 0.9rem;
+}
+.tab[aria-selected='true'],
+.tab[aria-checked='true'] {
+  color: var(--btn-ink);
+  background: var(--btn-bg);
+  border-color: var(--btn-edge);
+}
+@media (max-width: 640px) {
+  .tab {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* compact na top bar para mas maraming espasyo sa content */
+.topbar .frame {
+  padding: 4px;
+}
+.topbar .tab {
+  min-width: 0;
+  padding: 0.3rem 0.8rem;
+}
+.topbar .btn-sm {
+  padding: 0.3rem 0.7rem;
+}
+@media (max-width: 1023px) {
+  .topbar .tab {
+    padding: 0.35rem 0.3rem;
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 480px) {
+  .topbar .tab {
+    padding: 0.35rem 0.15rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* ---------- PROJECTS index row ---------- */
+.row {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  border-left: 2px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.row:hover {
+  background: rgb(var(--ink) / 0.04);
+}
+.row[data-active='true'] {
+  border-left-color: rgb(var(--accent));
+  background: rgb(var(--accent) / 0.08);
+}
+.row-num {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: rgb(var(--dim));
+  transition: color 0.2s ease;
+}
+.row[data-active='true'] .row-num,
+.row:hover .row-num {
+  color: rgb(var(--accent));
+}
+
+/* spec table */
+.spec > div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.65rem 0;
+}
+
+.zoom img {
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.zoom:hover img {
+  transform: scale(1.03);
+}
+
+/* portrait: natutunaw ang puting background sa flat na faction tint */
+.portrait {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(var(--line));
+  background: color-mix(in srgb, rgb(var(--accent)) 30%, rgb(var(--ink)));
+}
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  mix-blend-mode: multiply;
+}
+
+.kicker {
+  font-family: var(--font-chakra), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgb(var(--dim));
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: rgb(var(--ink) / 0.8);
+  border: 1px solid rgb(var(--line) / 0.8);
+  border-radius: var(--btn-radius);
+}
+
+/* LED: static, walang glow */
+.led {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: rgb(var(--signal));
+}
+[data-faction='protoss'] .led {
+  transform: rotate(45deg);
+}
+[data-faction='zerg'] .led {
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
